@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAS Camera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            border: 3px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirror effect */
+            display: none; /* Hidden by default */
+        }
+
+        .person-icon {
+            font-size: 200px;
+            color: #888;
+            display: block; /* Visible by default */
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #stopBtn {
+            background-color: #f44336;
+        }
+
+        #stopBtn:hover {
+            background-color: #d32f2f;
+        }
+
+        #captureBtn {
+            background-color: #2196F3;
+        }
+
+        #captureBtn:hover {
+            background-color: #0b7dda;
+        }
+
+        .error {
+            color: red;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .processing {
+            color: #2196F3;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 800px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <a href="#" class="logo">
+            <img src="{% static 'assets/img/logo.png' %}" alt="IAS Logo" />
+            <span class="d-none d-lg-block">IAS</span>
+        </a>
+    </div>
+
+    <div class="camera-container">
+        <div class="person-icon">👤</div>
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <div class="controls">
+        <button id="startBtn">Start Camera</button>
+        <button id="stopBtn" disabled>Stop Camera</button>
+        <button id="captureBtn" disabled>Mark Attendance</button>
+    </div>
+
+    <p id="errorMsg" class="error"></p>
+    <p id="processingMsg" class="processing">Processing attendance...</p>
+
+    <script>
+        const video = document.getElementById('video');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const processingMsg = document.getElementById('processingMsg');
+        const personIcon = document.querySelector('.person-icon');
+
+        let stream = null;
+        let frameInterval = null;
+        const FPS = 5; // Reduced frame rate for POST requests
+
+        // Start camera function
+        async function startCamera() {
+            errorMsg.textContent = '';
+
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        deviceId: { exact: '23cf7ab92ff7945cdbc78f4284f871ae6348de0741f8d29735bbb665a0825bed'},
+                        width: { ideal: 800 },
+                        height: { ideal: 600 },
+                        facingMode: "user" // Front camera
+                    },
+                    audio: false
+                });
+
+                {% comment %} const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                console.log(videoDevices); {% endcomment %}
+
+                video.srcObject = stream;
+                video.style.display = 'block';
+                personIcon.style.display = 'none';
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                captureBtn.disabled = false;
+                captureAndSendFrame();
+
+            } catch (err) {
+                errorMsg.textContent = `Error: ${err.message || 'Could not access camera'}`;
+                console.error("Camera error:", err);
+            }
+        }
+
+        // Capture and send frame for attendance
+        async function captureAndSendFrame() {
+            if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
+
+            processingMsg.style.display = 'block';
+            captureBtn.disabled = true;
+
+            try {
+                let i = 0;
+                while(i <= 5) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    // Convert to JPEG blob
+                    const blob = await new Promise(resolve => {
+                        canvas.toBlob(resolve, 'image/jpeg', 0.8);
+                    });
+
+                    // Create FormData and send via POST
+                    const formData = new FormData();
+                    formData.append('image', blob, 'frame.jpg');
+                    formData.append('index', i);
+
+                    // Get CSRF token
+                    const csrftoken = getCookie('csrftoken');
+
+                    // Send to Django backend
+                    const response = await fetch("{% url 'AddImagesToDataset' %}", {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrftoken,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Server error');
+                    }
+
+                    const data = await response.json();
+                    if (data.success) {
+                        errorMsg.textContent = 'Attendance marked successfully!';
+                    } else {
+                        errorMsg.textContent = 'Failed to mark attendance. Please try again.';
+                    }
+                    i += 1;
+                }
+
+            } catch (error) {
+                console.error('Error sending frame:', error);
+                errorMsg.textContent = 'Error processing attendance. Please try again.';
+            } finally {
+                processingMsg.style.display = 'none';
+                captureBtn.disabled = false;
+            }
+            {% comment %} captureAndSendFrame(); {% endcomment %}
+        }
+
+        // Stop camera function
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.style.display = 'none';
+                personIcon.style.display = 'block';
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                captureBtn.disabled = true;
+            }
+        }
+
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startCamera);
+        stopBtn.addEventListener('click', stopCamera);
+        captureBtn.addEventListener('click', captureAndSendFrame);
+
+        // Clean up when page is closed
+        window.addEventListener('beforeunload', () => {
+            stopCamera();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAS Camera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            border: 3px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirror effect */
+            display: none; /* Hidden by default */
+        }
+
+        .person-icon {
+            font-size: 200px;
+            color: #888;
+            display: block; /* Visible by default */
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #stopBtn {
+            background-color: #f44336;
+        }
+
+        #stopBtn:hover {
+            background-color: #d32f2f;
+        }
+
+        #captureBtn {
+            background-color: #2196F3;
+        }
+
+        #captureBtn:hover {
+            background-color: #0b7dda;
+        }
+
+        .error {
+            color: red;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .processing {
+            color: #2196F3;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 800px;
+            display: none;
+        }
+
+        .progress {
+            width: 100%;
+            max-width: 800px;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <a href="#" class="logo">
+            <img src="{% static 'assets/img/logo.png' %}" alt="IAS Logo" />
+            <span class="d-none d-lg-block">IAS</span>
+        </a>
+    </div>
+
+    <div class="camera-container">
+        <div class="person-icon">👤</div>
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <div class="controls">
+        {% comment %} <button id="startBtn">Start Camera</button> {% endcomment %}
+        <button id="stopBtn" disabled>Stop Camera</button>
+        <button id="captureBtn" disabled>Register Face</button>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar"></div>
+    </div>
+
+    <p id="errorMsg" class="error"></p>
+
+    <script>
+        const video = document.getElementById('video');
+        {% comment %} const startBtn = document.getElementById('startBtn'); {% endcomment %}
+        const stopBtn = document.getElementById('stopBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const personIcon = document.querySelector('.person-icon');
+        const progress = document.querySelector('.progress');
+        const progressBar = document.querySelector('.progress-bar');
+
+        let stream = null;
+
+        // Start camera function
+        async function startCamera() {
+            errorMsg.textContent = '';
+
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                console.log('Available video devices:', videoDevices);
+
+                const constraints = {
+                    video: {
+                        width: { ideal: 800 },
+                        height: { ideal: 600 },
+                        facingMode: "user"
+                    },
+                    audio: false
+                };
+
+                // If we found an HD camera, use it
+                const hdCamera = videoDevices.find(device => device.label.toLowerCase().includes('hd camera'));
+                if (hdCamera) {
+                    constraints.video.deviceId = { exact: hdCamera.deviceId };
+                }
+
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+                video.style.display = 'block';
+                personIcon.style.display = 'none';
+
+                {% comment %} startBtn.disabled = true; {% endcomment %}
+                stopBtn.disabled = false;
+                captureBtn.disabled = false;
+
+            } catch (err) {
+                errorMsg.textContent = `Error: ${err.message || 'Could not access camera'}`;
+                console.error("Camera error:", err);
+            }
+        }
+
+        // Stop camera function
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.style.display = 'none';
+                personIcon.style.display = 'block';
+                {% comment %} startBtn.disabled = false; {% endcomment %}
+                stopBtn.disabled = true;
+                captureBtn.disabled = true;
+            }
+        }
+
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Capture and send frame for face registration
+        async function captureAndSendFrame() {
+            if (video.readyState !== video.HAVE_ENOUGH_DATA) {
+                errorMsg.textContent = 'Camera not ready. Please wait...';
+                return;
+            }
+
+            captureBtn.disabled = true;
+            progress.style.display = 'block';
+            errorMsg.textContent = '';
+
+            try {
+                const totalSamples = 10;
+                for (let i = 0; i < totalSamples; i++) {
+                    // Update progress
+                    const progressPercent = ((i + 1) / totalSamples) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+
+                    // Create canvas and capture frame
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0);
+
+                    // Convert canvas to blob
+                    const blob = await new Promise((resolve, reject) => {
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(blob);
+                            } else {
+                                reject(new Error('Failed to create blob'));
+                            }
+                        }, 'image/jpeg', 0.8);
+                    });
+
+                    // Create and send form data
+                    const formData = new FormData();
+                    formData.append('image', blob, `frame_${i}.jpg`);
+
+                    const response = await fetch("{% url 'AddImagesToDataset' %}", {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    console.log(data);
+                    if (data.success == "Not") {
+                        errorMsg.textContent = 'No face detected. Please try again!';
+                        errorMsg.style.color = 'red';
+                        i -= 1;
+                    } else {
+                        errorMsg.textContent = 'Saved image ' + (i + 1) + ' of ' + totalSamples;
+                        errorMsg.style.color = '#4CAF50';
+                    }
+
+                    // Wait a short time between captures
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+
+                errorMsg.style.color = '#4CAF50';
+                errorMsg.textContent = 'Face registration completed successfully!';
+
+                // Redirect to appropriate page after success
+                {% comment %} setTimeout(() => {
+                    window.location.href = "{% url 'Camera' %}";
+                }, 2000); {% endcomment %}
+
+            } catch (error) {
+                console.error('Error sending frame:', error);
+                errorMsg.style.color = 'red';
+                errorMsg.textContent = `Error: ${error.message}. Please try again.`;
+                captureBtn.disabled = false;
+            } finally {
+                progress.style.display = 'none';
+                progressBar.style.width = '0%';
+            }
+        }
+
+        // Event listeners
+        {% comment %} startBtn.addEventListener('click', startCamera); {% endcomment %}
+        startCamera();
+        stopBtn.addEventListener('click', stopCamera);
+        captureBtn.addEventListener('click', captureAndSendFrame);
+
+        // Clean up when page is closed
+        window.addEventListener('beforeunload', stopCamera);
+    </script>
+</body>
+</html>

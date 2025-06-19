@@ -1,0 +1,25 @@
+{% extends "common/common_layout.html" %}
+{% load static %}
+{% block title %}
+Staff | Students
+{% endblock title %}
+{% block breadcrumb %}
+<div class="pagetitle">
+  <h1>Student</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'InstituteDashboard' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item">Manage Institute</li>
+      <li class="breadcrumb-item active">Student</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+{% endblock breadcrumb %}
+{% block content %}
+
+{% include "institutes/manage_student/student_content.html" %}
+
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends "common/common_layout.html" %}
+{% load static %}
+{% block title %} {{request.user.role_data.role_type | title}} | Dashboard {% endblock title %}
+
+{% block breadcrumb %}
+    <div class="pagetitle">
+      <h1>Profile</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            {% if request.user.role_data.role_type == 'student' %}
+            <a href="{% url 'StudentDashboard' %}">Home</a>
+            {% elif request.user.role_data.role_type == 'owner' %}
+            <a href="{% url 'InstituteDashboard' %}">Home</a>
+            {% elif request.user.role_data.role_type == 'staff' %}
+            <a href="{% url 'StaffDashboard' %}">Home</a>
+            {% endif %}
+
+          </li>
+          <li class="breadcrumb-item active">Profile</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<section class="section profile">
+    <div class="row">
+      <div class="col-xl-4">
+
+        {% include 'common/manage_profile/profile_image_card.html' %}
+
+
+      </div>
+
+      <div class="col-xl-8">
+
+        <div class="card">
+          <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+              </li>
+
+            </ul>
+            <div class="tab-content pt-2">
+
+              {% include 'common/manage_profile/profile_overview.html' %}
+
+              {% include 'common/manage_profile/profile_edit.html' %}
+
+            </div><!-- End Bordered Tabs -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% if request.user.role_data.role_type == 'student' %}
+    <footer id="footer" class="footer">
+        <div class="copyright">
+        &copy; Copyright <strong><span>IAS</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">Designed by <a href="{% url 'StudentDashboard' %}">Aysuh Headoo</a></div>
+    </footer>
+{% elif request.user.role_data.role_type == 'owner' %}
+    <footer id="footer" class="footer">
+        <div class="copyright">
+        &copy; Copyright <strong><span>IAS</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">Designed by <a href="{% url 'InstituteDashboard' %}">Aysuh Headoo</a></div>
+    </footer>
+{% elif request.user.role_data.role_type == 'staff' %}
+    <footer id="footer" class="footer">
+        <div class="copyright">
+        &copy; Copyright <strong><span>IAS</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">Designed by <a href="{% url 'StaffDashboard' %}">Aysuh Headoo</a></div>
+    </footer>
+{% endif %}

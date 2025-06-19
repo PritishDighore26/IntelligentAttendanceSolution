@@ -1,0 +1,208 @@
+{% load static %}
+{% if request.user.role_data.role_type == "student" %}
+<div class="tab-pane fade show active profile-overview" id="profile-overview">
+  <h5 class="card-title">About</h5>
+  <p class="small fst-italic">{{request.user.role_data.role_student.about}}</p>
+
+  <h5 class="card-title">Profile Details</h5>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Full Name</div>
+    <div class="col-lg-9 col-md-8">{{request.user.full_name}}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Department</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.department.department_name}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Enrollment Number</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.enrollment_number}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">D.O.B</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.dob}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">State</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.state}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Address</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.address}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Phone</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.mobile_no}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Email</div>
+    <div class="col-lg-9 col-md-8">{{request.user.email}}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Gender</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.gender}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Blood Group</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_student.blood_group}}
+    </div>
+  </div>
+</div>
+{% elif request.user.role_data.role_type == "owner" %}
+<div class="tab-pane fade show active profile-overview" id="profile-overview">
+  <h5 class="card-title">About</h5>
+  <p class="small fst-italic">Institute Owner Profile</p>
+
+  <h5 class="card-title">Profile Details</h5>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Institute Name</div>
+    <div class="col-lg-9 col-md-8">{{request.user.role_data.institute.institute_name}}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Institute Reg. No.</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.institute.institute_reg_number}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Owner Name</div>
+    <div class="col-lg-9 col-md-8">
+        {{request.user.full_name}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Email</div>
+    <div class="col-lg-9 col-md-8">{{request.user.email}}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Phone Number</div>
+    <div class="col-lg-9 col-md-8">
+        {{request.user.role_data.institute.phone_number}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Address</div>
+    <div class="col-lg-9 col-md-8">
+        {{request.user.role_data.institute.address}}
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">City</div>
+    <div class="col-lg-9 col-md-8">
+        {{request.user.role_data.institute.city}}
+    </div>
+  </div>
+</div>
+{% elif request.user.role_data.role_type == "staff" %}
+<div class="tab-pane fade show active profile-overview" id="profile-overview">
+  <h5 class="card-title">About</h5>
+  <p class="small fst-italic">{{request.user.role_data.role_staff.about}}</p>
+
+  <h5 class="card-title">Profile Details</h5>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Full Name</div>
+    <div class="col-lg-9 col-md-8">{{request.user.full_name}}</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Employee Id</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.id}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Email</div>
+    <div class="col-lg-9 col-md-8">{{request.user.email}}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Department</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.department.department_name}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Designation</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.designation.designation_name}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">D.O.B</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.dob}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">State</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.state}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Address</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.address}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Phone</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.mobile_no}}
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Gender</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.gender}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-md-4 label">Blood Group</div>
+    <div class="col-lg-9 col-md-8">
+      {{request.user.role_data.role_staff.blood_group}}
+    </div>
+  </div>
+</div>
+{% endif %}

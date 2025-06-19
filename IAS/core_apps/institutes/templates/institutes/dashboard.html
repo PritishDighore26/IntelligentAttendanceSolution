@@ -1,0 +1,255 @@
+{% extends "common/common_layout.html" %}
+{% load static %}
+{% block title %} Admin | Dashboard {% endblock title %}
+
+{% block breadcrumb %}
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'InstituteDashboard' %}">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+{% endblock breadcrumb %}
+
+{% block content %}
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+          <div class="row">
+
+            <!-- Student Card -->
+            <div class="col-xxl-3 col-md-6">
+              <div class="card info-card sales-card">
+
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                      </li>
+
+                      <li><a class="dropdown-item" href="#">Today</a></li>
+                      <li><a class="dropdown-item" href="#">This Month</a></li>
+                      <li><a class="dropdown-item" href="#">This Year</a></li>
+                    </ul>
+                  </div>
+                  <a href="{% url 'CreateReadStudent' %}">
+
+                  <div class="card-body">
+                    <h5 class="card-title">Students <span>| Today</span></h5>
+
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-mortarboard"></i> <!-- Replaced with mortarboard icon (graduation cap) -->
+
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{student_count}}</h6>
+                        {% comment %} <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> {% endcomment %}
+
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+
+                </div>
+              </div>
+            <!-- End Student Card -->
+
+            <!-- Staff Card -->
+            <div class="col-xxl-3 col-md-6">
+                <div class="card info-card revenue-card">
+
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                      </li>
+
+                      <li><a class="dropdown-item" href="#">Today</a></li>
+                      <li><a class="dropdown-item" href="#">This Month</a></li>
+                      <li><a class="dropdown-item" href="#">This Year</a></li>
+                    </ul>
+                  </div>
+                <a href="{% url 'CreateReadStaff' %}" class="cursor-pointer">
+
+                  <div class="card-body">
+                    <h5 class="card-title">Staff<span>| This Month</span></h5>
+
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-person"></i> <!-- Replaced with person icon -->
+
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{staff_count}}</h6>
+                        {% comment %} <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> {% endcomment %}
+
+                      </div>
+                    </div>
+                  </div>
+
+                </a>
+                </div>
+            </div>
+            <!-- End Staff Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-3 col-md-6">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Present<span> |</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success text-white">
+                      <i class="bi bi-emoji-heart-eyes-fill"></i> <!-- Replaced with person icon -->
+
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{present_count}}</h6>
+                      {% comment %} <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> {% endcomment %}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-3 col-md-6">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Absent <span>|</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger text-white">
+                      <i class="bi bi-emoji-angry-fill"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{absent_count}}</h6>
+                      {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-12">
+        <div class="row">
+
+          <!-- Recent Sales -->
+          <div class="col-xxl-9 col-md-6">
+            <div class="card recent-sales overflow-auto">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">All Attendance <span>| Today</span></h5>
+
+                {% include 'attendance/manage_attendance/institute_attendance_table.html' %}
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+          <!-- Recent Activity -->
+          <div class="col-xxl-3 col-md-6">
+            <div class="card">
+              <a  href="{% url 'InstituteTrainModel' %}" class="btn btn-primary text-white btn-md ">SYNC</a>
+
+              <div class="card-body ">
+
+
+                <h5 class="card-title">Recent Activity <span>| Last 7 Days</span></h5>
+
+
+                <div class="activity">
+                  {% for recent_activity in recent_activities%}
+                  <div class="activity-item d-flex">
+                    <div class="activite-label">{{recent_activity.last_activity_since}}</div>
+                    <i class='bi bi-circle-fill activity-badge text-{{recent_activity.activity_color}} align-self-start'></i>
+                    <div class="activity-content">
+                      {% if  recent_activity.a_type == "student" %}
+                      {{recent_activity.academic_info.student.department.department_name}}
+                      <a href="{% url 'CreateReadAcademicInfo' %}" class="fw-bold text-dark">{{recent_activity.academic_info.student.role.user.full_name}}</a>
+                      ({{recent_activity.academic_info.academic_class_section.class_name}} - {{recent_activity.academic_info.academic_class_section.section_name}})
+                      {% elif recent_activity.a_type == "staff" %}
+                      {{recent_activity.staff.department.department_name}}
+                      <a href="{% url 'CreateReadStaff' %}" class="fw-bold text-dark">{{recent_activity.staff.role.user.full_name}}</a>
+                      {{recent_activity.staff.designation.designation_name}}
+                      {% endif %}
+
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Activity -->
+          </div>
+          </div>
+
+        </div><!-- End Right side columns -->
+
+      </div>
+
+    </section>
+{% endblock content %}

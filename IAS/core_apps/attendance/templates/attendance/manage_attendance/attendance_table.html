@@ -1,0 +1,24 @@
+<table class="table table-borderless datatable">
+    <thead>
+      <tr>
+        <th scope="col" datatype="date" format="YYYY/MM/DD">Date</th>
+        <th scope="col">In - Out Time</th>
+        <th scope="col">Status</th>
+        <th scope="col">Marked By</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in attendances %}
+      <tr>
+        <th >{{data.a_date}}</th>
+        <td>{{data.in_time}} - {{data.out_time}}</td>
+        <td>
+          <span class="badge bg-{{data.badge_color}}">{{data.a_status}}</span>
+        </td>
+        <td>
+          {{data.created_by_name}}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>

@@ -1,0 +1,250 @@
+{% load static %}
+<div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+    <!-- Profile Edit Form -->
+    {% if request.user.role_data.role_type == "student" %}
+    <form  method="POST" action="{% url 'ProfileUpdateRead' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row mb-3">
+        <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+        <div class="col-md-8 col-lg-9">
+
+          {% if request.user.role_data.role_student.profile_image %}
+          <img src="{{request.user.role_data.role_student.profile_image.url}}" alt="Profile">
+          {% else %}
+          <img src="{% static '/assets/img/default_profile.png' %}" alt="Profile">
+          {% endif %}
+          <div class="pt-2">
+            <input name="profile_image" type="file" class="form-control" title="Upload new profile image" id="profile_image" >
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mb-3">
+        <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+        <div class="col-md-8 col-lg-9">
+          <textarea name="about" class="form-control" required="true" id="about" style="height: 100px">{{request.user.role_data.role_student.about}}</textarea>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="dob" class="col-md-4 col-lg-3 col-form-label">D.O.B</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="dob" type="date" required="true" class="form-control" id="dob" value="{{request.user.role_data.role_student.dob | date:'Y-m-d' }}">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="state" class="col-md-4 col-lg-3 col-form-label">State</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="state" type="text" class="form-control" required="true" id="state" value="{{request.user.role_data.role_student.state}}">
+        </div>
+      </div>
+
+
+
+      <div class="row mb-3">
+        <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="address" type="text" class="form-control" required="true" id="Address" value="{{request.user.role_data.role_student.address}}">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="mobile_no" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="mobile_no" type="text" class="form-control" required="true" id="mobile_no" value="{{request.user.role_data.role_student.mobile_no}}">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label class="col-md-4 col-lg-3 col-form-label">Gender</label>
+        <div class="col-md-8 col-lg-9">
+          <select class="form-select" aria-label="Gender" required="true" name="gender">
+            {% for gender in genders %}
+            {% if gender == request.user.role_data.role_student.gender %}
+              <option selected value="{{gender}}">{{gender}}</option>
+              {% else %}
+              <option  value="{{gender}}">{{gender}}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+
+      <div class="row mb-3">
+        <label class="col-md-4 col-lg-3 col-form-label">Blood Group</label>
+        <div class="col-md-8 col-lg-9">
+          <select class="form-select" aria-label="Blood Group" name="blood_group">
+            {% for blood_group in blood_groups %}
+            {% if blood_group == request.user.role_data.role_student.blood_group %}
+              <option selected value="{{blood_group}}">{{blood_group}}</option>
+              {% else %}
+              <option  value="{{blood_group}}">{{blood_group}}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+    {% elif request.user.role_data.role_type == "owner" %}
+    <form  method="POST" action="{% url 'ProfileUpdateRead' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row mb-3">
+        <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+        <div class="col-md-8 col-lg-9">
+
+          {% if request.user.role_data.institute.institute_image %}
+          <img src="{{request.user.role_data.institute.institute_image.url}}" alt="Profile">
+          {% else %}
+          <img src="{% static '/assets/img/default_profile.png' %}" alt="Profile">
+          {% endif %}
+          <div class="pt-2">
+            <input name="institute_image" type="file" class="form-control" title="Upload new profile image" id="institute_image" >
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mb-3">
+        <label for="institute_name" class="col-md-4 col-lg-3 col-form-label">Institute Name</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="institute_name" class="form-control" type="text" required="true" id="institute_name" value="{{request.user.role_data.institute.institute_name}}">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="institute_reg_number" class="col-md-4 col-lg-3 col-form-label">Institute Reg. No.</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="institute_reg_number" type="text" required="true" class="form-control" id="dob" value="{{request.user.role_data.institute.institute_reg_number }}">
+        </div>
+      </div>
+
+
+      <div class="row mb-3">
+        <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="address" type="text" class="form-control" required="true" id="Address" value="{{request.user.role_data.institute.address}}">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="city" class="col-md-4 col-lg-3 col-form-label">City</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="city" type="text" class="form-control" required="true" id="city" value="{{request.user.role_data.institute.city}}">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="phone_number" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="phone_number" type="text" class="form-control" required="true" id="phone_number" value="{{request.user.role_data.institute.phone_number}}">
+        </div>
+      </div>
+
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+    {% elif request.user.role_data.role_type == "staff" %}
+    <form  method="POST" action="{% url 'ProfileUpdateRead' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+          <div class="col-md-8 col-lg-9">
+
+            {% if request.user.role_data.role_staff.profile_image %}
+            <img src="{{request.user.role_data.role_staff.profile_image.url}}" alt="Profile">
+            {% else %}
+            <img src="{% static '/assets/img/default_profile.png' %}" alt="Profile">
+            {% endif %}
+            <div class="pt-2">
+              <input name="profile_image" type="file" class="form-control" title="Upload new profile image" id="profile_image" >
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row mb-3">
+          <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+          <div class="col-md-8 col-lg-9">
+            <textarea name="about" class="form-control" required="true" id="about" style="height: 100px">{{request.user.role_data.role_staff.about}}</textarea>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="dob" class="col-md-4 col-lg-3 col-form-label">D.O.B</label>
+          <div class="col-md-8 col-lg-9">
+            <input name="dob" type="date" required="true" class="form-control" id="dob" value="{{request.user.role_data.role_staff.dob | date:'Y-m-d' }}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="state" class="col-md-4 col-lg-3 col-form-label">State</label>
+          <div class="col-md-8 col-lg-9">
+            <input name="state" type="text" class="form-control" required="true" id="state" value="{{request.user.role_data.role_staff.state}}">
+          </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+          <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+          <div class="col-md-8 col-lg-9">
+            <input name="address" type="text" class="form-control" required="true" id="Address" value="{{request.user.role_data.role_staff.address}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="mobile_no" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+          <div class="col-md-8 col-lg-9">
+            <input name="mobile_no" type="text" class="form-control" required="true" id="mobile_no" value="{{request.user.role_data.role_staff.mobile_no}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="col-md-4 col-lg-3 col-form-label">Gender</label>
+          <div class="col-md-8 col-lg-9">
+            <select class="form-select" aria-label="Gender" required="true" name="gender">
+              {% for gender in genders %}
+              {% if gender == request.user.role_data.role_staff.gender %}
+                <option selected value="{{gender}}">{{gender}}</option>
+                {% else %}
+                <option  value="{{gender}}">{{gender}}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+
+        <div class="row mb-3">
+          <label class="col-md-4 col-lg-3 col-form-label">Blood Group</label>
+          <div class="col-md-8 col-lg-9">
+            <select class="form-select" aria-label="Blood Group" name="blood_group">
+              {% for blood_group in blood_groups %}
+              {% if blood_group == request.user.role_data.role_staff.blood_group %}
+                <option selected value="{{blood_group}}">{{blood_group}}</option>
+                {% else %}
+                <option  value="{{blood_group}}">{{blood_group}}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    <!-- End Profile Edit Form -->
+    {% endif %}
+
+
+</div>

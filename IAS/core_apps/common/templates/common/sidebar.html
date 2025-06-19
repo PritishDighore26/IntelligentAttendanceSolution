@@ -1,0 +1,127 @@
+{% if request.user.role_data.role_type == 'student' %}
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'StudentDashboard' %}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#manage-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Manage Students</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="manage-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'StudentAttendanceCreateRead' %}">
+              <i class="bi bi-circle"></i><span>Mark Attendance</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  {% elif request.user.role_data.role_type == 'owner' %}
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'InstituteDashboard' %}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'AttendanceList' %}">
+          <i class="bi bi-list"></i>
+          <span>Attendance Report</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#manage-settings" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Manage Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="manage-settings" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'CreateReadDepartment' %}">
+              <i class="bi bi-circle"></i><span>Departments</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'CreateReadDesignation' %}">
+              <i class="bi bi-circle"></i><span>Designation</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'CreateReadAcademicClassSection' %}">
+              <i class="bi bi-circle"></i><span>Class-Section</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'CreateReadAcademicSession' %}">
+              <i class="bi bi-circle"></i><span>Academic Session</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#manage-staff" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Manage Staff</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="manage-staff" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'CreateReadStaff' %}">
+              <i class="bi bi-circle"></i><span>Staffs</span>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#manage-student" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Manage Student</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="manage-student" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'CreateReadStudent' %}">
+              <i class="bi bi-circle"></i><span>Students</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'CreateReadAcademicInfo' %}">
+              <i class="bi bi-circle"></i><span>Student Academics</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  {% elif request.user.role_data.role_type == 'staff' %}
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'StaffDashboard' %}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#manage-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Manage Students</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="manage-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'StaffCreateReadStudent' %}">
+              <i class="bi bi-circle"></i><span>Students</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'AttendanceList' %}">
+              <i class="bi bi-circle"></i><span>Attendance</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  {% endif %}

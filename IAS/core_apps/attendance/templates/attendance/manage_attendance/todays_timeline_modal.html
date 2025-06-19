@@ -1,0 +1,26 @@
+<div class="modal fade" id="verticalycentered" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Today's Timeline ({{todays_attendance.a_date}})</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">In Time</th>
+                <th scope="col">Out Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{todays_attendance.in_time}}</td>
+                <td>{{todays_attendance.out_time}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,270 @@
+{% extends "common/common_layout.html" %}
+{% load static %}
+{% block title %} Staff | Dashboard {% endblock title %}
+
+{% block breadcrumb %}
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'StaffDashboard' %}">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+{% endblock breadcrumb %}
+
+{% block content %}
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+
+          <div class="row">
+            <!-- Sales Card -->
+            <div class="col-xxl-3 col-xl-12">
+              <div class="card info-card sales-card">
+
+                {% comment %} <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div> {% endcomment %}
+
+                <div class="card-body">
+                  <h5 class="card-title">Staff <span>| Designation</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-primary text-white">
+                      <i class="bi bi-mortarboard"></i>
+                      <!-- Replaced with mortarboard icon (graduation cap) -->
+
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{request.user.role_data.role_staff.designation.designation_name}}</h6>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <!-- Customers Card -->
+            <div class="col-xxl-3 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                {% comment %} <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    {% for digit, month in months_map.items %}
+                      <li><a class="dropdown-item" href="{% url 'StaffDashboard' %}?month={{digit}}">{{month}}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div> {% endcomment %}
+
+                <div class="card-body">
+                  <h5 class="card-title">Students <span>| Total</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-secondary text-white">
+                      <i class="bi bi-emoji-laughing"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{student_count}}</h6>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <!-- End Customers Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-3 col-xl-12">
+              <div class="card info-card revenue-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+                    {% for digit, month in months_map.items %}
+                      <li><a class="dropdown-item" href="{% url 'StaffDashboard' %}?month={{digit}}">{{month}}</a></li>
+                    {% endfor %}
+
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Present<span>| {{current_month}}</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success text-white">
+                      <i class="bi bi-emoji-heart-eyes-fill"></i> <!-- Replaced with person icon -->
+
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{present_count}}</h6>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-3 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    {% for digit, month in months_map.items %}
+                      <li><a class="dropdown-item" href="{% url 'StaffDashboard' %}?month={{digit}}">{{month}}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Absent <span>| {{current_month}}</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger text-white">
+                      <i class="bi bi-emoji-angry-fill"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{absent_count}}</h6>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+
+          </div>
+          <!-- End Customers Card -->
+        </div>
+        <!-- End Customers Card -->
+
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+
+          <div class="row">
+
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    {% for status in attendance_status %}
+                      <li><a class="dropdown-item" href="{% url 'StaffDashboard' %}?status={{status}}">{{status | upper }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Staff Attendance <span>| Till yesterday</span></h5>
+
+                  {% include "attendance/manage_attendance/attendance_table.html" %}
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Mark Attendance <span>| Today ({{todays_attendance.a_date}})</span></h5>
+              <img src="{% static 'assets/img/attendance-system.jpg' %}" class="card-img-top"  alt="...">
+              <form method="POST">
+                {% csrf_token %}
+
+                <p class="card-text">
+                  Clock In/Clock Out to mark attendance!
+                </p>
+                {% if not todays_attendance.a_in_time and not todays_attendance.a_out_time  %}
+
+                <button type="submit" class="btn btn-primary">  Clock In </button>
+                {% elif not todays_attendance.a_out_time %}
+                <button type="submit" class="btn btn-danger"> Clock Out </button>
+                {% else %}
+                <button type="button" class="btn btn-secondary " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Since you marked today's attendance">
+                   Bye Bye!
+                </button>
+                {% endif %}
+                <button type="button" class="btn btn-info text-white ml-3" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+                  View Timeline
+                </button>
+
+                {% include "attendance/manage_attendance/todays_timeline_modal.html" %}
+
+              </form>
+
+            </div>
+          </div><!-- End Recent Activity -->
+
+
+
+
+
+
+        </div><!-- End Right side columns -->
+
+      </div>
+    </section>
+{% endblock content %}

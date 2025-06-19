@@ -1,0 +1,134 @@
+{% load static %}
+{% if request.user.role_data.role_type == 'student' %}
+  <li class="nav-item dropdown pe-3">
+
+      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="{% url 'ProfileUpdateRead' %}" data-bs-toggle="dropdown">
+          {% if request.user.role_data.role_student.profile_image %}
+              <img src="{{request.user.role_data.role_student.profile_image.url}}" alt="Profile" class="rounded-circle">
+
+          {% else %}
+              <img src="{% static '/assets/img/default_profile.png' %}" alt="Profile" class="rounded-circle">
+
+          {% endif %}
+
+          <span class="d-none d-md-block dropdown-toggle ps-2">{{request.user.full_name}} </span>
+      </a>
+
+
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+      <li class="dropdown-header">
+        <h6>{{request.user.full_name}}</h6>
+        <span>{{request.user.role_data.role_type | title}} | {{request.user.role_data.role_student.department.department_name}}</span>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'ProfileUpdateRead' %}">
+          <i class="bi bi-person"></i>
+          <span>My Profile</span>
+        </a>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'Logout' %}">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
+        </a>
+      </li>
+
+    </ul><!-- End Profile Dropdown Items -->
+  </li>
+{% elif request.user.role_data.role_type == 'owner' %}
+  <li class="nav-item dropdown pe-3">
+
+      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="{% url 'ProfileUpdateRead' %}" data-bs-toggle="dropdown">
+          {% if request.user.role_data.institute.institute_image %}
+              <img src="{{request.user.role_data.institute.institute_image.url}}" alt="Profile" class="rounded-circle">
+
+          {% else %}
+              <img src="{% static '/assets/img/default_profile.png' %}" alt="Profile" class="rounded-circle">
+
+          {% endif %}
+
+          <span class="d-none d-md-block dropdown-toggle ps-2">{{request.user.full_name}} </span>
+      </a>
+
+
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+      <li class="dropdown-header">
+        <h6>{{request.user.full_name}}</h6>
+        <span>{{request.user.role_data.role_type | title}}</span>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'ProfileUpdateRead' %}">
+          <i class="bi bi-person"></i>
+          <span>My Profile</span>
+        </a>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'Logout' %}">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
+        </a>
+      </li>
+
+    </ul><!-- End Profile Dropdown Items -->
+  </li>
+{% elif request.user.role_data.role_type == 'staff' %}
+  <li class="nav-item dropdown pe-3">
+
+      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="{% url 'ProfileUpdateRead' %}" data-bs-toggle="dropdown">
+          {% if request.user.role_data.role_staff.profile_image %}
+              <img src="{{request.user.role_data.role_staff.profile_image.url}}" alt="Profile" class="rounded-circle">
+
+          {% else %}
+              <img src="{% static '/assets/img/default_profile.png' %}" alt="Profile" class="rounded-circle">
+
+          {% endif %}
+
+          <span class="d-none d-md-block dropdown-toggle ps-2">{{request.user.full_name}} </span>
+      </a>
+
+
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+      <li class="dropdown-header">
+        <h6>{{request.user.full_name}}</h6>
+        <span>{{request.user.role_data.role_type | title}} | {{request.user.role_data.role_staff.department.department_name}}</span>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'ProfileUpdateRead' %}">
+          <i class="bi bi-person"></i>
+          <span>My Profile</span>
+        </a>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'Logout' %}">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
+        </a>
+      </li>
+
+    </ul><!-- End Profile Dropdown Items -->
+  </li>
+{% endif %}
