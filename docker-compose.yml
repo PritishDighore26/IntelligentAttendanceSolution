@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+  prod-db:
+    image: postgres:14.2-alpine
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgresql-prod-data:/var/lib/postgresql/data
+
+  app:
+    image: prafulcoder/ias-app:latest
+    restart: unless-stopped
+    ports:
+      - '8000:8000'
+    depends_on:
+      - prod-db
+    environment:
+      IAS_SETTINGS_DATABASES: '{"default":{"HOST":"${POSTGRES_HOST}","PORT":"$POSTGRES_PORT}"}}'
+      IAS_SETTINGS_IN_DOCKER: 'true'
+      IAS_SETTINGS_SECRET_KEY: ${IAS_SETTINGS_SECRET_KEY}
+      IAS_SETTINGS_CAMERA_IP: ${IAS_SETTINGS_CAMERA_IP}
+      IAS_SETTINGS_DEBUG: 'false'
+    volumes:
+      - /media:/opt/project/media
+      - /face_recognition_data:/opt/project/face_recognition_data
+
+volumes:
+  postgresql-prod-data:
+    driver: local

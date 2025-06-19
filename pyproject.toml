@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "IAS"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <your@email.com>"]
+readme = "README.md"
+packages = [{ include = "IAS" }]
+
+[tool.poetry.dependencies]
+python = "~3.10"
+django = "4.2"
+mysqlclient = "2.2.4"
+pillow = "8.4.0"
+gunicorn = "22.0.0"
+django-phonenumber-field = "8.0.0"
+phonenumbers = "8.13.40"
+whitenoise = "6.7.0"
+django-pandas = "0.6.2"
+face-recognition = "1.3.0"
+face-recognition-models = "0.3.0"
+numpy = "1.22.4"
+opencv-python = "4.5.5.64"
+pandas = "2.2.3"
+python-dateutil = "2.8.2"
+pytz = "2020.4"
+scikit-learn = "1.6.1"
+scipy = "1.7.3"
+imutils = "^0.5.4"
+django-import-export = "^4.3.7"
+django-filter = "^25.1"
+requests = "^2.32.3"
+pyyaml = "^6.0.2"
+django-cors-headers = "^4.7.0"
+colorlog = "^6.9.0"
+django-storages = "^1.14.5"
+psycopg2 = "^2.9.10"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.2.0"
+python-dotenv = "^1.1.0"
+pre-commit = "^4.2.0"
+
+
+[tool.isort]
+multi_line_output = 5
+line_length = 120
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "IAS.ias.settings"
+django_find_project = false
+python_files = "test_*.py"
+testpaths = ["IAS"]
+filterwarnings = "ignore::DeprecationWarning:^(?!node\\.).*:"
+
+[tool.yapf]
+based_on_style = "google"
+align_closing_bracket_with_visual_indent = true
+coalesce_brackets = true
+column_limit = 120
+dedent_closing_brackets = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,16 @@
+[flake8]
+ignore = A005,C101,D403,F403,F405,I100,I201,W503,W504,Q000,A003,I101,E126,B006
+exclude =
+    .git,
+    __pycache__,
+    venv
+    migrations
+filename = *.py
+accept-encodings = utf-8
+inline-quotes = single
+max-complexity = 12
+max-linenumber = 500
+max-line-length = 120
+multiline-quotes = double
+per-file-ignores =
+    IAS/core_apps/users/migrations/*:E251,E501
